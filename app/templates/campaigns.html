@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Кампании{% endblock %}
+{% block body %}
+<section class="sheet">
+  <div class="row-head">
+    <h1>Кампании</h1>
+    <form method="get" class="search">
+      <input name="q" value="{{ query }}" placeholder="имя или ID">
+      <button type="submit">Найти</button>
+    </form>
+  </div>
+  {% if error %}
+    <p class="error">{{ error }}</p>
+  {% endif %}
+  <table class="grid">
+    <thead>
+      <tr><th>ID</th><th>Название</th><th>Алиас</th><th>Состояние</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for item in campaigns %}
+      <tr>
+        <td class="num">{{ item.id }}</td>
+        <td>{{ item.name }}</td>
+        <td class="num">{{ item.alias }}</td>
+        <td>{{ item.state }}</td>
+        <td><a href="/campaigns/{{ item.id }}">Открыть</a></td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5">Кампаний нет.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+<section class="sheet">
+  <h2>Журнал</h2>
+  <table class="grid log">
+    <tbody>
+      {% for row in activity %}
+      <tr>
+        <td class="num">{{ row.created_at.strftime("%d.%m %H:%M") }}</td>
+        <td>{% if row.action == "campaign_created" %}создана кампания{% elif row.action == "stream_pushed" %}обновлены доли{% else %}{{ row.action }}{% endif %}{% if row.campaign_id %} {{ row.campaign_id }}{% endif %}</td>
+      </tr>
+      {% else %}
+      <tr><td>Записей нет.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

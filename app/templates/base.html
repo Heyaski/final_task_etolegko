@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Keitaro{% endblock %}</title>
+  <link rel="stylesheet" href="/static/app.css?v=3">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="/campaigns">Keitaro</a>
+    <nav>
+      <a href="/" {% if page == "create" %}aria-current="page"{% endif %}>Новая кампания</a>
+      <a href="/campaigns" {% if page == "campaigns" or page == "editor" %}aria-current="page"{% endif %}>Кампании</a>
+      <a href="/settings" {% if page == "settings" %}aria-current="page"{% endif %}>Подключение</a>
+    </nav>
+    {% if mock %}
+      <span class="status">демо, ключ не задан</span>
+    {% else %}
+      <span class="status">{{ keitaro_url }}</span>
+    {% endif %}
+  </header>
+  <main>
+    {% block body %}{% endblock %}
+  </main>
+</body>
+</html>

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Подключение{% endblock %}
+{% block body %}
+<section class="sheet narrow">
+  <h1>Подключение</h1>
+  <p class="note">Ключ берётся в админке: Профиль, API ключи. Пустое поле ключа оставляет уже сохранённый.</p>
+  <form method="post">
+    <label>Адрес админки
+      <input name="keitaro_base_url" value="{{ base_url }}" required>
+    </label>
+    <label>API ключ
+      <input name="keitaro_api_key" type="password" placeholder="{% if has_key %}сохранён{% else %}не задан{% endif %}" autocomplete="off">
+    </label>
+    <button class="primary" type="submit">Сохранить</button>
+    <button type="button" id="check">Проверить</button>
+  </form>
+  {% if saved %}
+    <p class="note">{{ saved }}</p>
+  {% endif %}
+  <p id="ping" class="note"></p>
+</section>
+<script>
+  document.getElementById("check").addEventListener("click", async () => {
+    const node = document.getElementById("ping");
+    node.textContent = "Проверяю…";
+    const response = await fetch("/api/setup");
+    const body = await response.json();
+    if (!response.ok) {
+      node.textContent = body.detail || "Не удалось подключиться";
+      return;
+    }
+    const line = (label, item) => item ? label + " " + item.name + " #" + item.id : label + " не найден";
+    node.textContent = [
+      body.mock ? "Демо." : "API отвечает.",
+      line("домен", body.domain),
+      line("группа", body.group),
+      line("источник", body.source)
+    ].join(" ");
+  });
+</script>
+{% endblock %}

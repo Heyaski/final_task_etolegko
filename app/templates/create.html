@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Новая кампания{% endblock %}
+{% block body %}
+<div class="split">
+  <form id="create-form" class="sheet">
+    <h1>Новая кампания</h1>
+    <p class="note">Страны из гео уходят на Google. Остальные на выбранный оффер.</p>
+    <label>Название
+      <input name="name" required autocomplete="off">
+    </label>
+    <label>Гео
+      <input name="geo" required placeholder="AU или MX, RO" autocomplete="off">
+    </label>
+    <label>Оффер
+      <input id="offer-search" placeholder="имя или ID" autocomplete="off">
+    </label>
+    <input type="hidden" name="offer_id" id="offer-id">
+    <div id="offer-picked" class="note">Оффер не выбран</div>
+    <ul id="offer-list" class="suggest" hidden></ul>
+    <p id="setup" class="note"></p>
+    <button type="submit" class="primary">Создать</button>
+    <p id="form-error" class="error" hidden></p>
+  </form>
+  <aside id="result" class="sheet">
+    <h2>Результат</h2>
+    <p class="note">Появится после создания.</p>
+  </aside>
+</div>
+<script src="/static/create.js"></script>
+{% endblock %}

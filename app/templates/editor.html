@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{ campaign.name }}{% endblock %}
+{% block body %}
+<section class="sheet">
+  <div class="row-head">
+    <h1>{{ campaign.name }} <span class="num">{{ campaign.id }}</span></h1>
+    <div class="actions">
+      <button type="button" id="fetch">Обновить</button>
+      <a class="button" href="{{ campaign.admin_url }}" target="_blank" rel="noreferrer">Открыть в Keitaro</a>
+      <button type="button" id="all-offers">Все офферы</button>
+    </div>
+  </div>
+  <p class="note">
+    {% if campaign.url %}<a href="{{ campaign.url }}" target="_blank" rel="noreferrer">{{ campaign.url }}</a>{% endif %}
+    алиас {{ campaign.alias or "—" }}, {{ campaign.state }}
+  </p>
+  <p id="editor-error" class="error" hidden></p>
+  <div id="streams"></div>
+</section>
+<dialog id="offer-dialog">
+  <form method="dialog" class="sheet dialog-card">
+    <div class="row-head">
+      <h2>Все офферы</h2>
+      <button value="cancel">Закрыть</button>
+    </div>
+    <label>Поток
+      <select id="target-stream"></select>
+    </label>
+    <input id="dialog-search" placeholder="имя или ID" autocomplete="off">
+    <ul id="dialog-list" class="suggest"></ul>
+  </form>
+</dialog>
+<script id="boot" type="application/json">{{ boot | safe }}</script>
+<script src="/static/editor.js"></script>
+{% endblock %}
